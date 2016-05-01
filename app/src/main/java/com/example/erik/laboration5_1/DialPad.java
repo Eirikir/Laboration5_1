@@ -17,13 +17,10 @@ import java.io.File;
  */
 
 public class DialPad extends TableLayout {
-    private static SoundPool sndPool; // Ugly solution, please forgive me :)
 //    private Map<Character, Dial> dials = new HashMap<>();
 
     public DialPad(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        sndPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 
         setFocusableInTouchMode(true);
         requestFocus();
@@ -61,54 +58,6 @@ public class DialPad extends TableLayout {
             }
         });
 
-    }
-
-    public static int loadSnd(Context context, char ch) {
-/*        if(isExternalStorageReadable())
-            System.out.println("readable!");
-*/
-        File dir = Environment.getExternalStorageDirectory();
-        String fileName = null;
-        switch(ch) {
-            case '0' : fileName = "zero"; break;
-            case '1' : fileName = "one"; break;
-            case '2' : fileName = "two"; break;
-            case '3' : fileName = "three"; break;
-            case '4' : fileName = "four"; break;
-            case '5' : fileName = "five"; break;
-            case '6' : fileName = "six"; break;
-            case '7' : fileName = "seven"; break;
-            case '8' : fileName = "eight"; break;
-            case '9' : fileName = "nine"; break;
-            case '#' : fileName = "pound"; break;
-            case '*' : fileName = "star"; break;
-        }
-
-        File sndFile = new File(dir, "/dialpad/sounds/mamacita_us/"+fileName+".mp3");
-        return sndPool.load(sndFile.getAbsolutePath(), 1);
-    }
-
-    public static boolean playSnd(int soundID) {
-        if(!isExternalStorageReadable())
-            return false;
-
-
-        sndPool.play(soundID, 1, 1, 0, 0, 1);
-        return true;
-    }
-
-    private static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state))
-            return true;
-        return false;
-    }
-
-    private static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-            return true;
-        return false;
     }
 
 }

@@ -21,6 +21,7 @@ public class Dial extends ImageButton {
     private char value;
     private EditText nmbField;
     private Drawable mainImg, pressImg;
+    private SoundManager sndManager;
     private int soundId;
     private boolean animRun = false;  // used for onKey
     private Animation fadeIn = new AlphaAnimation(0, 1);
@@ -47,7 +48,9 @@ public class Dial extends ImageButton {
                 value = ch;
 
             // find correlating sound file
-            soundId = DialPad.loadSnd(context, value);
+            sndManager = SoundManager.getInstance();
+            soundId = sndManager.loadSnd(value);
+//            soundId = DialPad.loadSnd(context, value);
 
         } finally {
             attrValues.recycle();
@@ -94,7 +97,7 @@ public class Dial extends ImageButton {
             nmbField.append(""+value);
 
         // if no external storage is found, show toast
-        if(!DialPad.playSnd(soundId)) {
+        if(!sndManager.playSnd(soundId)) {
             Toast toast = Toast.makeText(this.getContext(), "No external storage found!", Toast.LENGTH_SHORT);
             toast.show();
         }
