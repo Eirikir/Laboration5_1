@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DialPad">
+        <attr name="name" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="Dial">
+        <attr name="btn_name" format="string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="store_calls"
+        android:title="Track Calls Made"
+        android:summary="Whether we should store made calls in SharedPreferences."
+        android:defaultValue="true"
+        />
+
+</PreferenceScreen>
