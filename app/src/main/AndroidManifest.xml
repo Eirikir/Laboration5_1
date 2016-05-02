@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.erik.laboration5_1">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
-    <uses-permission android:name="android.permission.CALL_PHONE"
-        />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <!--
     android:maxSdkVersion="18"
     -->
@@ -38,6 +36,16 @@
                 android:value="com.example.erik.laboration5_1.MainActivity" />
 
             </activity>
+
+        <activity
+            android:name=".DownloadVoiceActivity"
+            android:label="Download voice"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.erik.laboration5_1.MainActivity" />
+        </activity>
 
         <activity android:name=".SettingsActivity"
             android:label="Preferences" >

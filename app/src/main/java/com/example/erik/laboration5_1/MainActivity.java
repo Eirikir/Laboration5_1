@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.File;
 import java.nio.charset.Charset;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle("Laboration 5_1");
+        setTitle("DialPad");
         call_list_pref = getSharedPreferences("preference_call_list", Context.MODE_PRIVATE);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings_pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -84,16 +86,24 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-//            startActivityForResult(intent, RESULT_SETTINGS);
-            startActivity(intent);
-            return true;
+        Intent intent = null;
+
+        switch(id) {
+            case R.id.action_settings : intent = new Intent(this, SettingsActivity.class); break;
+            case R.id.call_list : intent = new Intent(this, CallListActivity.class); break;
+            case R.id.download :
+//                File dir = Environment.getExternalStorageDirectory()+"/dialpad/sounds/";
+                intent = new Intent(this, DownloadVoiceActivity.class)
+                        .putExtra("SOURCE", "http://dt031g.programvaruteknik.nu/dialpad/sounds/")
+                        .putExtra("TARGET", Environment.getExternalStorageDirectory().getAbsolutePath() + "/dialpad/sounds/");
+/*                intent
+                        .putExtra("URL", "http://dt031g.programvaruteknik.nu/dialpad/sounds/")
+                        .putExtra("STORAGE");
+                    */
+                break;
         }
 
-        else if (id == R.id.call_list) {
-            Intent intent = new Intent(this, CallListActivity.class);
+        if(intent != null) {
             startActivity(intent);
             return true;
         }

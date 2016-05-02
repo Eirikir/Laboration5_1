@@ -10,6 +10,18 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/download"
+        android:icon="@drawable/ic_action_download"
+        android:title="Download voices"
+        app:showAsAction="ifRoom"
+        />
+
+    <!--
+
+
+    -->
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
