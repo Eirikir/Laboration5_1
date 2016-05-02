@@ -1,13 +1,16 @@
 package com.example.erik.laboration5_1;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.nio.charset.Charset;
 
@@ -124,9 +128,18 @@ public class MainActivity extends AppCompatActivity {
 
         // call dialer
         String telNmb = nmbField.getText().toString();
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+//        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.fromParts("tel", telNmb, "#"));
 //        intent.setData(Uri.parse("tel:" + text));
-        startActivity(intent);
+//        if(checkCallingPermission(""))
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        if(permission == PackageManager.PERMISSION_GRANTED) {
+            startActivity(intent);
+        }
+        else {
+            Toast toast = Toast.makeText(this, "No permission found!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
