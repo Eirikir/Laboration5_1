@@ -41,15 +41,11 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings_pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-
-//        SharedPreferences.Editor editor = settings_pref.edit();
-//        editor.clear().commit();
-
-        // map initial sounds
+        // map initial sounds, based on stored sound family
         SoundManager.getInstance().mapSounds(settings_pref);
 
+        // set up our number field
         nmbField = (EditText) findViewById((R.id.nmbField));
-
         // set reference to nmbField to each dial
         final char[] ch = {'1','2','3','4','5','6','7','8','9','s','0','p'};
         for (int i = 0; i < ch.length; i++) {
@@ -90,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings : intent = new Intent(this, SettingsActivity.class); break;
             case R.id.call_list : intent = new Intent(this, CallListActivity.class); break;
             case R.id.download :
-//                File dir = Environment.getExternalStorageDirectory()+"/dialpad/sounds/";
                 intent = new Intent(this, DownloadVoiceActivity.class)
                         .putExtra("SOURCE", "http://dt031g.programvaruteknik.nu/dialpad/sounds/")
                         .putExtra("TARGET", Environment.getExternalStorageDirectory().getAbsolutePath() + "/dialpad/sounds/");
@@ -115,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
     // call
     public void call(View v) {
 
-        if(settings_pref.getBoolean("store_calls", true)) { // should we store calls?
+        // should we store calls?
+        if(settings_pref.getBoolean("store_calls", true)) {
             SharedPreferences.Editor editor = call_list_pref.edit();
 //        editor.clear().commit();
 
+            // determine key by which we should store number, based on previously stored numbers.
             int idx = 0;
             String tel;
             do {
@@ -135,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(Intent.ACTION_DIAL);
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.fromParts("tel", telNmb, "#"));
-//        intent.setData(Uri.parse("tel:" + text));
-//        if(checkCallingPermission(""))
+
         int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
         if(permission == PackageManager.PERMISSION_GRANTED) {
             startActivity(intent);
@@ -145,5 +141,11 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "No permission found!", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    // only used for testing
+    private void clearPrefs() {
+        SharedPreferences.Editor editor = settings_pref.edit();
+        editor.clear().commit();
     }
 }

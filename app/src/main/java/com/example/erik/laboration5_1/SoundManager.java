@@ -13,16 +13,16 @@ import java.util.Map;
 
 /**
  * Created by Erik on 1/5 001.
+ * Description: Singleton manager for sounds.
  */
 public class SoundManager {
     private static SoundManager manager = null;
     private SoundPool sndPool;
     private String sndFamily;
+    private Map<Character, Integer> charSound = new HashMap<>(); // all sounds are mapped to relevant char
 
     private SoundManager() {
         sndPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-//        sndFamily = "mamacita_us";
-//        mapSounds("mamacita_us");
     }
 
     public static SoundManager getInstance() {
@@ -31,30 +31,7 @@ public class SoundManager {
         return manager;
     }
 
-/*    public int loadSnd(char ch) {
-        File dir = Environment.getExternalStorageDirectory();
-        String fileName = null;
-        switch(ch) {
-            case '0' : fileName = "zero"; break;
-            case '1' : fileName = "one"; break;
-            case '2' : fileName = "two"; break;
-            case '3' : fileName = "three"; break;
-            case '4' : fileName = "four"; break;
-            case '5' : fileName = "five"; break;
-            case '6' : fileName = "six"; break;
-            case '7' : fileName = "seven"; break;
-            case '8' : fileName = "eight"; break;
-            case '9' : fileName = "nine"; break;
-            case '#' : fileName = "pound"; break;
-            case '*' : fileName = "star"; break;
-        }
 
-        File sndFile = new File(dir, "/dialpad/sounds/"+sndFamily+"/"+fileName+".mp3");
-        return sndPool.load(sndFile.getAbsolutePath(), 1);
-    }*/
-
-    Map<Character, Integer> charSound = new HashMap<>();
-//    public void mapSounds(String newFamily) {
     public void mapSounds(SharedPreferences prefs) {
         String newFamily = prefs.getString("voice", "mamacita_us");
         System.out.println(newFamily);
@@ -64,6 +41,7 @@ public class SoundManager {
 //        sndPool.release();
         sndFamily = newFamily;
 
+        // ok, lets map all sounds to their specifik characters
         char[] chars = {'1','2','3','4','5','6','7','8','9','0','#','*'};
         File dir = Environment.getExternalStorageDirectory();
         String fileName = null;
@@ -86,9 +64,7 @@ public class SoundManager {
             }
 
             File sndFile = new File(dir, "/dialpad/sounds/"+sndFamily+"/"+fileName+".mp3");
-//            File sndFile = new File(sndFamily+"/"+fileName+".mp3");
             charSound.put(ch, sndPool.load(sndFile.getAbsolutePath(), 1));
-//            return sndPool.load(sndFile.getAbsolutePath(), 1);
         }
 
     }
@@ -99,19 +75,6 @@ public class SoundManager {
 
         int sndID = charSound.get(value);
         sndPool.play(sndID, 1, 1, 0, 0, 1);
-        return true;
-    }
-
-
-    public void setSndFamily(String family) {
-        sndFamily = family;
-    }
-
-    public boolean playSnd(int soundID) {
-        if(!isExternalStorageReadable())
-            return false;
-
-        sndPool.play(soundID, 1, 1, 0, 0, 1);
         return true;
     }
 

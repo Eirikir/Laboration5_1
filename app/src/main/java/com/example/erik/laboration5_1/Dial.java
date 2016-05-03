@@ -17,12 +17,10 @@ import android.widget.Toast;
  * Created by Erik on 21/4 021.
  */
 public class Dial extends ImageButton {
-//    private String name;
     private char value;
     private EditText nmbField;
     private Drawable mainImg, pressImg;
     private SoundManager sndManager;
-    private int soundId;
     private boolean animRun = false;  // used for onKey
     private Animation fadeIn = new AlphaAnimation(0, 1);
 
@@ -39,7 +37,7 @@ public class Dial extends ImageButton {
             int resID = getResources().getIdentifier("dialpad_" + ch + "_pressed", "drawable", context.getPackageName());
             pressImg = ResourcesCompat.getDrawable(getResources(), resID, null);
 
-
+            // set character value of this Dial
             if(ch == 'p')
                 value = '#';
             else if(ch == 's')
@@ -49,7 +47,6 @@ public class Dial extends ImageButton {
 
             // find correlating sound file
             sndManager = SoundManager.getInstance();
-//            soundId = sndManager.loadSnd(value);
         } finally {
             attrValues.recycle();
         }
@@ -94,12 +91,6 @@ public class Dial extends ImageButton {
         if(nmbField != null)
             nmbField.append(""+value);
 
-        // if no external storage is found, show toast
-/*        if(!sndManager.playSnd(soundId)) {
-            Toast toast = Toast.makeText(this.getContext(), "No external storage found!", Toast.LENGTH_SHORT);
-            toast.show();
-        }*/
-
         if(!sndManager.playSound(value)) {
             Toast toast = Toast.makeText(this.getContext(), "No external storage found!", Toast.LENGTH_SHORT);
             toast.show();
@@ -112,8 +103,6 @@ public class Dial extends ImageButton {
             btnPressed();
         }
     }
-
-    public int getSoundId() { return soundId; }
 
     public void setNmbField(EditText field) { nmbField = field; }
 

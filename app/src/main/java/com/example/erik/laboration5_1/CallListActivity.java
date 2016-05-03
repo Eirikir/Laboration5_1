@@ -25,9 +25,9 @@ public class CallListActivity extends AppCompatActivity {
         TextView telNmbView = (TextView) findViewById(R.id.telNmbrs);
 
         // get preference file
-//        SharedPreferences call_list_pref = getSharedPreferences(getString(R.string.PREFERENCE_CALL_LIST), Context.MODE_PRIVATE);
         SharedPreferences call_list_pref = getSharedPreferences("preference_call_list", Context.MODE_PRIVATE);
 
+        // add all numbers we find in preferences to view
         int idx = 1;
         while(true) {
             String tel = call_list_pref.getString("tel_"+idx, null);

@@ -17,8 +17,6 @@ import java.io.File;
  */
 
 public class DialPad extends TableLayout {
-//    private Map<Character, Dial> dials = new HashMap<>();
-
     public DialPad(Context context, AttributeSet attrs) {
         super(context, attrs);
 
