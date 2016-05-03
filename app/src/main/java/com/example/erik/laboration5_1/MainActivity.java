@@ -41,14 +41,12 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings_pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-/*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+
+//        SharedPreferences.Editor editor = settings_pref.edit();
+//        editor.clear().commit();
+
+        // map initial sounds
+        SoundManager.getInstance().mapSounds(settings_pref);
 
         nmbField = (EditText) findViewById((R.id.nmbField));
 
@@ -96,10 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, DownloadVoiceActivity.class)
                         .putExtra("SOURCE", "http://dt031g.programvaruteknik.nu/dialpad/sounds/")
                         .putExtra("TARGET", Environment.getExternalStorageDirectory().getAbsolutePath() + "/dialpad/sounds/");
-/*                intent
-                        .putExtra("URL", "http://dt031g.programvaruteknik.nu/dialpad/sounds/")
-                        .putExtra("STORAGE");
-                    */
                 break;
         }
 

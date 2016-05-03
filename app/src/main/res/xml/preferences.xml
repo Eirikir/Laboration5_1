@@ -11,6 +11,7 @@
     <ListPreference
         android:key="voice"
         android:title="Voice"
+        android:summary="Choose which of the downloaded voices to use."
         />
 
 

@@ -36,10 +36,5 @@ public class CallListActivity extends AppCompatActivity {
             telNmbView.append("\n" + tel);
             idx++;
         }
-
-//        Set<String> call_list_set = call_list_pref.getStringSet("call_list", null);
-/*        for (int i = 0; i < 100; i++) {
-            telNmbView.append("\n"+i);
-        }*/
     }
 }

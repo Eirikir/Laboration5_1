@@ -25,25 +25,14 @@ public class MyPreferenceFragment extends PreferenceFragment {
 
         // get all available voices
         File baseDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dialpad/sounds/");
-        final List<String> entryPath = new ArrayList<>();
         String[] entries = baseDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-//                return new File(dir, filename).isDirectory();
-                if(new File(dir, filename).isDirectory()) {
-                    entryPath.add("/mnt/sdcard/sounds/"+filename+"/");
-                    return true;
-                }
-
-                return false;
+                return new File(dir, filename).isDirectory();   // add directories to array
             }
         });
 
-        String[] entryValues = entryPath.toArray(new String[entryPath.size()]);
         voice.setEntries(entries);
-        voice.setEntryValues(entryValues);
-
-//        SoundManager.getInstance().setSndFamily(voice.getEntry().toString());
-
+        voice.setEntryValues(entries);  // reuse array, since we only use file names
     }
 }

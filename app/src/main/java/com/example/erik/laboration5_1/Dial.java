@@ -49,9 +49,7 @@ public class Dial extends ImageButton {
 
             // find correlating sound file
             sndManager = SoundManager.getInstance();
-            soundId = sndManager.loadSnd(value);
-//            soundId = DialPad.loadSnd(context, value);
-
+//            soundId = sndManager.loadSnd(value);
         } finally {
             attrValues.recycle();
         }
@@ -97,7 +95,12 @@ public class Dial extends ImageButton {
             nmbField.append(""+value);
 
         // if no external storage is found, show toast
-        if(!sndManager.playSnd(soundId)) {
+/*        if(!sndManager.playSnd(soundId)) {
+            Toast toast = Toast.makeText(this.getContext(), "No external storage found!", Toast.LENGTH_SHORT);
+            toast.show();
+        }*/
+
+        if(!sndManager.playSound(value)) {
             Toast toast = Toast.makeText(this.getContext(), "No external storage found!", Toast.LENGTH_SHORT);
             toast.show();
         }

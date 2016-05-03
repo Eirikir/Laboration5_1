@@ -42,18 +42,6 @@ public class DownloadVoiceActivity extends AppCompatActivity {
         browser.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                //               Uri uri = Uri.parse(url);
-                //               Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                //               startActivity(intent);
-
-/*                DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request req = new DownloadManager.Request(Uri.parse(url));
-                req.allowScanningByMediaScanner();
-                req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalPublicDir("/dialpad/sounds", "test.zip");
-
-                mgr.enqueue(req);
-                */
                 fileURLPath = url;
                 new DownloadFile().execute();
             }
@@ -65,26 +53,21 @@ public class DownloadVoiceActivity extends AppCompatActivity {
         browser.loadUrl(url);
     }
 
-    private class DownloadFile extends AsyncTask<String, String, String> {
+    private class DownloadFile extends AsyncTask<String, Integer, String> {
         private ProgressDialog pDialog;
         @Override
         protected String doInBackground(String... args) {
-//            Uri uri = Uri.parse(fileURLPath);
-/*            DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-            DownloadManager.Request req = new DownloadManager.Request(Uri.parse(fileURLPath));
-            req.allowScanningByMediaScanner();
-            req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            req.setDestinationInExternalPublicDir("/dialpad/sounds", "test.zip");
-
-            mgr.enqueue(req);
-*/
             InputStream is;
             try {
                 URL url = new URL(fileURLPath);
+
+
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
                 con.setDoOutput(true);
                 con.connect();
+
+                int fileLength = con.getContentLength();    // can we get total size of file
 
                 is = con.getInputStream();
 
@@ -94,38 +77,55 @@ public class DownloadVoiceActivity extends AppCompatActivity {
                 // download file from URL to target directory
                 byte[] buffer = new byte[1024];
                 int len = 0;
+                int total = 0;  // progressed length
                 while ((len = is.read(buffer)) != -1) {
                     fos.write(buffer, 0, len);
+                    total += len;
+
+                    // update progress if file length is known
+                    if(fileLength > 0)
+                        publishProgress((int) (total * 100 / fileLength));
+
+                    Thread.sleep(1); // only to simulate slower download
                 }
                 fos.close();
                 is.close();
 
                 ZIP.decompress(outputFile.getAbsolutePath(), target);
-                outputFile.delete();
-
-/*                String[] na = {"kalle.zip", "kalle1.zip", "test.zip", "test-1.zip", "test-2.zip", "ida_dk", "peter_uk"};
-                for(int i = 0; i < na.length; i++) {
-                    File f1 = new File(target, na[i]);
-                    f1.delete();
-                }*/
-
+                outputFile.delete();    // delete zip file
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
+            } catch(Exception ex) {
+
             }
             return "";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+
+            pDialog.setProgress(progress[0]);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // init progressdialog
-//            pDialog = ProgressDialog.show(getBaseContext(), "", "", true);
             pDialog = new ProgressDialog(DownloadVoiceActivity.this);
             pDialog.setTitle("Downloading voice");
-//            pDialog.setMessage("Downloading...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
+
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+            // text in dialog
+            int pos = fileURLPath.lastIndexOf("/");
+            String name = fileURLPath.substring(pos+1);
+            pDialog.setMessage(name);
+            pDialog.setProgressNumberFormat(null);
+
             pDialog.show();
         }
 
@@ -136,27 +136,11 @@ public class DownloadVoiceActivity extends AppCompatActivity {
             pDialog.dismiss();
         }
 
-//        @Override
-//        protected void onProgressUpdate(String... args) {}
     }
 
     private class MyBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-/*            if(url.endsWith(".dps")) {
-                System.out.println(url);
-                return true;
-            }*/
-
-/*            if(url.endsWith(".dps")) {
-                DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request req = new DownloadManager.Request(Uri.parse(url));
-                req.allowScanningByMediaScanner();
-                req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalPublicDir("/dialpad/sounds", "test.zip");
-
-                mgr.enqueue(req);
-            }*/
             view.loadUrl(url);
             return true;
         }
