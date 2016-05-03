@@ -2,6 +2,7 @@ package com.example.erik.laboration5_1;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
+
+
 
 /*        String action = getIntent().getAction();
         if(action != null && action.equals(ACTION_PREFS_ONE)) {

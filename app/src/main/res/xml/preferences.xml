@@ -8,4 +8,10 @@
         android:defaultValue="true"
         />
 
+    <ListPreference
+        android:key="voice"
+        android:title="Voice"
+        />
+
+
 </PreferenceScreen>

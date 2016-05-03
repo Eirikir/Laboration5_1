@@ -48,6 +48,10 @@ public class SoundManager {
         return sndPool.load(sndFile.getAbsolutePath(), 1);
     }
 
+    public void setSndFamily(String family) {
+        sndFamily = family;
+    }
+
     public boolean playSnd(int soundID) {
         if(!isExternalStorageReadable())
             return false;
